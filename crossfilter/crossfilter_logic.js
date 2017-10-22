@@ -1,6 +1,6 @@
   // (It's CSV, but GitHub Pages only gzip's JSON at the moment.)
   // d3.csv("transactions-3m.json", function(error, transactions) {
-  d3.csv("landsbanki.csv", function (error, transactions) {
+  d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
 
       // Various formatters.
       var formatNumber = d3.format(",d"),
@@ -104,7 +104,7 @@
           //     d.substring(2, 4),
           //     d.substring(4, 6),
           //     d.substring(6, 8));
-          return new Date(parseInt(d));
+          return new Date(d);
       }
 
       window.filter = function (filters) {

@@ -11,8 +11,7 @@ def get_last_row(csv_filename):
         return ["2002-09-26 02:00:00"] # first date that landsbankinn has values for
     except IndexError:  # file only has headings (i.e. one line)
         return ["2002-09-26 02:00:00"]
-    except FileNotFoundError:
-        # create file
+    except FileNotFoundError: # create new file
         file = open(csv_filename, "w")
         file.write("date,exchange_rate\n")
         file.close()
@@ -38,7 +37,6 @@ def daterange(start_date, end_date):
         if current_date.weekday() not in (5,6): # market is closed on weekends, so we leave out saturday and sunday
             yield current_date
 
-
 def post_request(post_data, filename):
     endpoint_url = "https://www.landsbankinn.is/Services/MethodProxy.asmx/Execute"
     answer_data = []
@@ -58,14 +56,13 @@ def post_request(post_data, filename):
         print(human_readable_date)
     file.close()
 
-
 if __name__ == "__main__":
     filename = "data/landsbanki_sek_isk.csv"
     last_recorded_timestamp = datetime.datetime.strptime(get_last_row(filename)[0], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
   
     # date from is the last date we have a value for (plus one day so we don't get the same value twice)
-    date_from = (datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d") + datetime.timedelta(days=1)) #.strftime("%Y-%m-%d")
-    date_to = datetime.datetime.now() #.strftime("%Y-%m-%d")
+    date_from = (datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d") + datetime.timedelta(days=1))
+    date_to = datetime.datetime.now()
 
     print("Starting to send requests...")
     for single_date in daterange(date_from, date_to):

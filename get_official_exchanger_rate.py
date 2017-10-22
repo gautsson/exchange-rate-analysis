@@ -12,8 +12,7 @@ def get_last_row(csv_filename):
         return ["1950-01-01 12:00:00"]
     except IndexError:  # file only has headings (i.e. one line)
         return ["1950-01-01 12:00:00"]
-    except FileNotFoundError:
-        # create file
+    except FileNotFoundError: # create new file
         file = open(csv_filename, "w")
         file.write("date,exchange_rate\n")
         file.close()
