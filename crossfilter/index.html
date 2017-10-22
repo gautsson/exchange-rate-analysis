@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>SEK vs ISK</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<div id="body">
+  <h1>ISK vs SEK</h1>
+  <h2>Þetta er nú meira ruglið.</h2>
+
+  <div id="charts">
+    <div id="hour-chart" class="chart">
+      <div class="title">Time of day (24h clock)</div>
+    </div>
+    <div id="exchange_rate-chart" class="chart">
+      <div class="title">Exchange rate (SEK/ISK)</div>
+    </div>
+    <div id="date-chart" class="chart">
+      <div class="title">Date</div>
+    </div>
+  </div>
+
+  <aside id="totals">
+    <b>
+      <span id="active">-</span>
+    </b> of
+    <b>
+      <span id="total">-</span>
+    </b> recorded spot exchange rate transactions match the current selection.</aside>
+
+  <div id="lists">
+    <div id="transaction-list" class="list"></div>
+  </div>
+
+</div>
+<script src="libs/crossfilter.v1.min.js"></script>
+<script src="libs/d3.v3.min.js"></script>
+<script src="crossfilter_logic.js"></script>
