@@ -17,6 +17,15 @@ def get_last_row(csv_filename):
         file.close()
         return ["2002-09-26 02:00:00"]
 
+def get_last_50_rows(csv_filename):
+    last_values = []
+    with open(csv_filename, "r") as f:
+        csv_reader = csv.reader(f)
+        last_line = collections.deque(csv.reader(f), 50)
+        for i in range(len(last_line)):
+            last_values.append(last_line[i][0])
+    return last_values
+
 def get_data_to_post(date):
     return {
         "methodName": "ExchangeRatesComparison.GetHistory",
@@ -30,7 +39,7 @@ def get_data_to_post(date):
             date.strftime("%Y-%m-%d") + "T21:59:59.999Z"
         ]
     }
-    
+   
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         current_date = start_date + datetime.timedelta(n)
@@ -40,31 +49,34 @@ def daterange(start_date, end_date):
 def post_request(post_data, filename):
     endpoint_url = "https://www.landsbankinn.is/Services/MethodProxy.asmx/Execute"
     answer_data = []
-    r = requests.post(endpoint_url, json=post_data) 
+    r = requests.post(endpoint_url, json=post_data)
 
     if r.status_code == 200 and r.json()["d"] != None and r.json()["d"][0] != None:
         answer_data = r.json()["d"][0][0]["data"]
     else:
         print("Error: " + r.text)
 
+    fifty_last_rows = get_last_50_rows(filename)
     file = open(filename, "a")
     for item in answer_data:
         date = item[0]/1000 # date is in unix time with milliseconds added to it (js time)
         human_readable_date = datetime.datetime.fromtimestamp(date).strftime("%Y-%m-%d %H:%M:%S")
-        result = str(human_readable_date) + "," + str(item[1]) + "\n"
-        file.write(result)
-        print(human_readable_date)
+        # we don't want to duplicate data in the file. we can be relatively certain that 50 entries covers more than a day
+        if human_readable_date not in fifty_last_rows:
+            result = str(human_readable_date) + "," + str(item[1]) + "\n"
+            file.write(result)
+            print(human_readable_date)
     file.close()
 
 if __name__ == "__main__":
     filename = "data/landsbanki_sek_isk.csv"
-    last_recorded_timestamp = datetime.datetime.strptime(get_last_row(filename)[0], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+    last_recorded_timestamp = datetime.datetime.strptime(get_last_row(filename)[0], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S")
   
     # date from is the last date we have a value for (plus one day so we don't get the same value twice)
-    date_from = (datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d") + datetime.timedelta(days=1))
-    date_to = datetime.datetime.now()
+    date_from = datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d %H:%M:%S")
+    date_to = datetime.datetime.now() + datetime.timedelta(days=1)
 
     print("Starting to send requests...")
     for single_date in daterange(date_from, date_to):
-        print("\nRequest for: " + single_date.strftime("%A %Y-%m-%d %H:%M:%S"))
+        print("\nRequest for: " + single_date.strftime("%A %Y-%m-%d"))
         post_request(get_data_to_post(single_date), filename)
