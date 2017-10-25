@@ -65,7 +65,7 @@ def post_request(post_data, filename):
         if human_readable_date not in fifty_last_rows:
             result = str(human_readable_date) + "," + str(item[1]) + "\n"
             file.write(result)
-            print(human_readable_date)
+            print("Date: " + human_readable_date + " & Value: " + str(item[1]))
     file.close()
 
 if __name__ == "__main__":
