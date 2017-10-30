@@ -74,7 +74,7 @@ if __name__ == "__main__":
   
     # date from is the last date we have a value for (plus one day so we don't get the same value twice)
     date_from = datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d %H:%M:%S")
-    date_to = datetime.datetime.now() + datetime.timedelta(days=2)
+    date_to = (datetime.datetime.now() + datetime.timedelta(days=1)).replace(hour=23, minute=59)
 
     print("Starting to send requests...")
     for single_date in daterange(date_from, date_to):
