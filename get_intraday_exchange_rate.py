@@ -41,8 +41,10 @@ def get_data_to_post(date):
     }
    
 def daterange(start_date, end_date):
+    start_date = start_date.replace(hour=1, minute=1)
+    end_date = end_date.replace(hour=23, minute=59)
     if start_date.date() == end_date.date():
-        return start_date
+        yield start_date
     else:
         for n in range(int ((end_date - start_date).days) + 1):
             current_date = start_date + datetime.timedelta(n)
@@ -77,7 +79,7 @@ if __name__ == "__main__":
   
     # date from is the last date we have a value for (plus one day so we don't get the same value twice)
     date_from = datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d %H:%M:%S")
-    date_to = (datetime.datetime.now()).replace(hour=23, minute=59) #+ datetime.timedelta(days=1)).replace(hour=23, minute=59)
+    date_to = datetime.datetime.now()
 
     print("Starting to send requests...")
     for single_date in daterange(date_from, date_to):
