@@ -41,10 +41,13 @@ def get_data_to_post(date):
     }
    
 def daterange(start_date, end_date):
-    for n in range(int ((end_date - start_date).days)):
-        current_date = start_date + datetime.timedelta(n)
-        if current_date.weekday() not in (5,6): # market is closed on weekends, so we leave out saturday and sunday
-            yield current_date
+    if start_date.date() == end_date.date():
+        return start_date
+    else:
+        for n in range(int ((end_date - start_date).days) + 1):
+            current_date = start_date + datetime.timedelta(n)
+            if current_date.weekday() not in (5,6): # market is closed on weekends, so we leave out saturday and sunday
+                yield current_date
 
 def post_request(post_data, filename):
     endpoint_url = "https://www.landsbankinn.is/Services/MethodProxy.asmx/Execute"
@@ -74,7 +77,7 @@ if __name__ == "__main__":
   
     # date from is the last date we have a value for (plus one day so we don't get the same value twice)
     date_from = datetime.datetime.strptime(last_recorded_timestamp, "%Y-%m-%d %H:%M:%S")
-    date_to = (datetime.datetime.now() + datetime.timedelta(days=1)).replace(hour=23, minute=59)
+    date_to = (datetime.datetime.now()).replace(hour=23, minute=59) #+ datetime.timedelta(days=1)).replace(hour=23, minute=59)
 
     print("Starting to send requests...")
     for single_date in daterange(date_from, date_to):
