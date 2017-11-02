@@ -59,7 +59,10 @@ def post_request(post_data, filename):
     if r.status_code == 200 and r.json()["d"] != None and r.json()["d"][0] != None:
         answer_data = r.json()["d"][0][0]["data"]
     else:
-        print("Error: " + r.text)
+        if """{"d":[null,null]}""" in r.text:
+            print("No values exist for this date yet.")
+        else:
+            print("Error: " + r.text)
 
     fifty_last_rows = get_last_50_rows(filename)
     file = open(filename, "a")
