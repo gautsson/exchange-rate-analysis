@@ -1,5 +1,4 @@
-d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
-
+d3.csv("../data/landsbanki_sek_isk.csv", function (error, transactions) {
     // Various formatters.
     var formatNumber = d3.format(",d"),
         formatDate = d3.time.format("%d %B %Y"),
@@ -48,34 +47,35 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
 
 
 
-    // BoE: add new day dimension
+    // add new day dimension
     var dayNumber = transaction.dimension(function (d) { return d.date.getDay(); });
     var dayNumbers = dayNumber.group(function (d) { return d; });
-    // BoE: add day selection variables
+    
+    // add day selection variables
     var days = {
-        mon: { state: true, name: "days", text: "Monday", dayNumber: 1, order: 0 },
-        tue: { state: true, name: "days", text: "Tuesday", dayNumber: 2, order: 1 },
-        wed: { state: true, name: "days", text: "Wednesday", dayNumber: 3, order: 2 },
-        thu: { state: true, name: "days", text: "Thursday", dayNumber: 4, order: 3 },
-        fri: { state: true, name: "days", text: "Friday", dayNumber: 5, order: 4 },
+        mon: { state: true, name: "days", text: "Mánudagur", dayNumber: 1, order: 0 },
+        tue: { state: true, name: "days", text: "Þriðjudagur", dayNumber: 2, order: 1 },
+        wed: { state: true, name: "days", text: "Miðvikudagur", dayNumber: 3, order: 2 },
+        thu: { state: true, name: "days", text: "Fimmtudagur", dayNumber: 4, order: 3 },
+        fri: { state: true, name: "days", text: "Föstudagur", dayNumber: 5, order: 4 },
     },
         workDays = Object.keys(days).map(function (d) { return d; }),
         dayNumbers = (function () { var obj = {}; Object.keys(days).forEach(function (d) { var key = days[d].dayNumber; var value = d; obj[key] = value }); return obj; })();
 
-    // BoE: prep add radio buttons and checkbox data
+    // prep add radio buttons and checkbox data
     // var radioData = Object.keys(dayTypes).map(function (d) { dayTypes[d].value = d; return dayTypes[d]; }).sort(function (a, b) { return (a.order > b.order ? 1 : (a.order < b.order) ? -1 : 0) })
     var checkboxData = Object.keys(days).map(function (d) { days[d].value = d; return days[d]; }).sort(function (a, b) { return (a.order > b.order ? 1 : (a.order < b.order) ? -1 : 0) })
 
     var fieldset = d3.select("#daySelectionDiv").append("fieldset")
-    fieldset.append("legend").text("Day of week");
+    fieldset.append("legend").text("Vikudagur");
 
-    // BoE: add spans to hold checkboxes
+    // add spans to hold checkboxes
     var checkboxSpan = fieldset.selectAll(".checkbox")
         .data(checkboxData)
         .enter().append("span")
         .attr("class", "checkbox")
     //.style("margin-right", "10px")
-    // BoE: add checkbox to each span
+    // add checkbox to each span
     checkboxSpan
         .append("input")
         //.attr("type", "checkbox")
@@ -90,12 +90,12 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
             value: function (d) { return d.value },
             checked: function (d) { return d.state }
         })
-    // BoE: add checkbox label
+    // add checkbox label
     checkboxSpan
         .append("label")
         .text(function (d) { return d.text })
-    // BoE: add radio button event handler
-    // BoE: init checkboxes and add event handler
+    // add radio button event handler
+    // init checkboxes and add event handler
     d3.selectAll("input[type=checkbox][name=days]")
         .property("checked", function (d, i, a) {
             var elem = d3.select(this);
@@ -112,7 +112,7 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
             renderAll();
         })
 
-    // BoE: update the state of the day selection radio buttons and checkboxes (called after "change" events from those elements)
+    // update the state of the day selection radio buttons and checkboxes (called after "change" events from those elements)
     function updateDaySelection() {
         // BoE: update checkboxes
         d3.selectAll("input[type=checkbox][name=days]")
@@ -121,48 +121,49 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
                 var day = elem.property("value");
                 return days[day].state;
             })
-        // BoE: create/update day number filter
+        // create/update day number filter
         dayNumber.filter(function (d) { return days[dayNumbers[d]].state; })
     }
     
     
     ///// Months test
     
-    // BoE: add new month dimension
+    // add new month dimension
     var monthNumber = transaction.dimension(function (d) { return d.date.getMonth(); });
     var monthNumbers = monthNumber.group(function (d) { return d; });
-    // BoE: add month selection variables
+    
+    // add month selection variables
     var months = {
-        jan: { state: true, name: "months", text: "January", monthNumber: 0, order: 0 },
-        feb: { state: true, name: "months", text: "February", monthNumber: 1, order: 1 },
-        mar: { state: true, name: "months", text: "March", monthNumber: 2, order: 2 },
-        apr: { state: true, name: "months", text: "April", monthNumber: 3, order: 3 },
-        may: { state: true, name: "months", text: "May", monthNumber: 4, order: 4 },
-        jun: { state: true, name: "months", text: "June", monthNumber: 5, order: 5 },
-        jul: { state: true, name: "months", text: "July", monthNumber: 6, order: 6 },
-        aug: { state: true, name: "months", text: "August", monthNumber: 7, order: 7 },
+        jan: { state: true, name: "months", text: "Janúär", monthNumber: 0, order: 0 },
+        feb: { state: true, name: "months", text: "Febrúar", monthNumber: 1, order: 1 },
+        mar: { state: true, name: "months", text: "Mars", monthNumber: 2, order: 2 },
+        apr: { state: true, name: "months", text: "Apríl", monthNumber: 3, order: 3 },
+        may: { state: true, name: "months", text: "Maí", monthNumber: 4, order: 4 },
+        jun: { state: true, name: "months", text: "Júní", monthNumber: 5, order: 5 },
+        jul: { state: true, name: "months", text: "Júlí", monthNumber: 6, order: 6 },
+        aug: { state: true, name: "months", text: "Ágúst", monthNumber: 7, order: 7 },
         sept: { state: true, name: "months", text: "September", monthNumber: 8, order: 8 },
-        oct: { state: true, name: "months", text: "October", monthNumber: 9, order: 9 },
-        nov: { state: true, name: "months", text: "November", monthNumber: 10, order: 10 },
-        dec: { state: true, name: "months", text: "December", monthNumber: 11, order: 11 },
+        oct: { state: true, name: "months", text: "Október", monthNumber: 9, order: 9 },
+        nov: { state: true, name: "months", text: "Nóvember", monthNumber: 10, order: 10 },
+        dec: { state: true, name: "months", text: "Desember", monthNumber: 11, order: 11 },
     },
         workmonths = Object.keys(months).map(function (d) { return d; }),
         monthNumbers = (function () { var obj = {}; Object.keys(months).forEach(function (d) { var key = months[d].monthNumber; var value = d; obj[key] = value }); return obj; })();
 
-    // BoE: prep add radio buttons and checkbox data
+    // prep add radio buttons and checkbox data
     // var radioData = Object.keys(monthTypes).map(function (d) { monthTypes[d].value = d; return monthTypes[d]; }).sort(function (a, b) { return (a.order > b.order ? 1 : (a.order < b.order) ? -1 : 0) })
     var checkboxData = Object.keys(months).map(function (d) { months[d].value = d; return months[d]; }).sort(function (a, b) { return (a.order > b.order ? 1 : (a.order < b.order) ? -1 : 0) })
 
     var fieldset = d3.select("#monthSelectionDiv").append("fieldset")
-    fieldset.append("legend").text("Month of year");
+    fieldset.append("legend").text("Mánuður ársins");
 
-    // BoE: add spans to hold checkboxes
+    // add spans to hold checkboxes
     var checkboxSpan = fieldset.selectAll(".checkbox")
         .data(checkboxData)
         .enter().append("span")
         .attr("class", "checkbox")
     //.style("margin-right", "10px")
-    // BoE: add checkbox to each span
+    // add checkbox to each span
     checkboxSpan
         .append("input")
         //.attr("type", "checkbox")
@@ -177,12 +178,12 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
             value: function (d) { return d.value },
             checked: function (d) { return d.state }
         })
-    // BoE: add checkbox label
+    // add checkbox label
     checkboxSpan
         .append("label")
         .text(function (d) { return d.text })
-    // BoE: add radio button event handler
-    // BoE: init checkboxes and add event handler
+    // add radio button event handler
+    // init checkboxes and add event handler
     d3.selectAll("input[type=checkbox][name=months]")
         .property("checked", function (d, i, a) {
             var elem = d3.select(this);
@@ -199,16 +200,16 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
             renderAll();
         })
 
-    // BoE: update the state of the month selection radio buttons and checkboxes (called after "change" events from those elements)
+    // update the state of the month selection radio buttons and checkboxes (called after "change" events from those elements)
     function updatemonthSelection() {
-        // BoE: update checkboxes
+        // update checkboxes
         d3.selectAll("input[type=checkbox][name=months]")
             .property("checked", function (d, i, a) {
                 var elem = d3.select(this);
                 var month = elem.property("value");
                 return months[month].state;
             })
-        // BoE: create/update month number filter
+        // create/update month number filter
         monthNumber.filter(function (d) { return months[monthNumbers[d]].state; })
     }
     
@@ -380,7 +381,7 @@ d3.csv("landsbanki_sek_isk.csv", function (error, transactions) {
                     div.select(".title").append("a")
                         .attr("href", "javascript:reset(" + id + ")")
                         .attr("class", "reset")
-                        .text("reset")
+                        .text("núllstilla")
                         .style("display", "none");
 
                     g = div.append("svg")

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>Hvers virði er ein sænsk króna?</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<div id="body">
+  <h1>Hvers virði er ein sænsk króna?</h1>
+  <h2>Og hvernig hefur virði hennar gagnvart íslensku krónunni breyst síðasta áratuginn?</h2>
+  
+  <p>Virði íslensku krónunnar gagnvart öðrum gjaldmiðlum er sett á svokölluðum millibankamarkaði um gjaldeyri. 
+    Millibankamarkaðurinn er opinn alla virka daga á milli 09:15 og 15:00 og á honum eru fjórir aðilar: 
+      Arion banki, Landsbankinn, Íslandsbanki, og loks Seðlabanki Íslands.</p> 
+    
+  <p>Á meðan að markaðurinn er opinn býður Seðlabankinn
+    viðskiptabönkunum reglulega yfir daginn að kaupa tiltekið magn af evrum. Sá banki sem býður hæsta krónuupphæð fyrir evrurnar skuldbindur sig að kaupa
+    þær af Seðlabankanum, og þar með ákvarðast gengi krónunnar gagnvart evru á þeim tímapunkti sem viðskiptin eiga sér stað. 
+    Seðlabankinn getur einnig gripið inn í markaðinn, t.d. til þess að dempa sveiflur í virði krónunnar.</p> 
+    
+  <p>Eins og gefur að skilja þýðir þetta að gengi íslensku krónunnar getur
+    sveiflast töluvert yfir hvern dag sem markaðir eru opnir.</p>
+    
+  <p>Virði allra annarra gjaldmiðla á móti íslensku krónunni ákvarðast svo af virði þeirra í evrum. Ef til að mynda síðasta uppboð á millibankamarkaðnum
+    leiddi til þess að 1 evra er virði 100 króna, og að á sama tíma er virði 1 evru 10 norskar krónur, þá þýðir það að 1 norsk króna er virði 10 íslenskra króna (100/10).</p>
+
+  <p>Þetta þýðir að virði íslensku krónunnar gagnvart öllum öðrum gjaldmiðlum en evrunni er háð bæði gengi íslensku krónunnar gagnvart evrunni og svo gengi 
+    viðkomandi gjaldmiðils gagnvart evrunni. Svo er til að mynda farið með sænsku krónuna.</p>
+    
+  <p>Í þessu dýnamíska grafi er hægt að nota síur til þess að skoða hvernig SEK/ISK gengið hefur 
+     breyst og hvernig það hefur þróast á ólíkum dögum, dagsetningum og tímapunktum. Gögnin eru fengin frá Landsbankanum.</p>
+
+  <p>Hægt er að nálgast kóða síðunnar á <a href="https://github.com/gautsson/exchange-rate-analysis">GitHub</a>.</p>
+     
+  <div id="charts">
+    <div id="hour-chart" class="chart">
+      <div class="title">Tími dags (24. tíma klukka) á móti fjölda viðskiptagerninga</div>
+    </div>
+    <div id="exchange_rate-chart" class="chart">
+      <div class="title">Gengi (SEK/ISK) á móti fjölda viðskiptagerninga</div>
+    </div>
+    <div id="date-chart" class="chart">
+      <div class="title">Dagsetning á móti fjölda viðskiptagerninga</div>
+    </div>
+  </div>
+  
+  
+  <div id="daySelectionDiv"></div>
+  <br>
+  <div id="monthSelectionDiv"></div>
+    <br>
+  <aside id="totals">
+    <b>
+      <span id="active">-</span>
+    </b> af
+    <b>
+      <span id="total">-</span>
+    </b> skráðum viðskiptagerningum falla undir núverandi síun.
+    <br><br>
+      Meðaltalsgengi fyrir núverandi val:<b>
+      <span id="average">-</span>
+    </b>
+  </aside>
+
+  <div id="lists">
+    <div id="transaction-list" class="list"></div>
+  </div>
+
+</div>
+<script src="libs/crossfilter.v1.min.js"></script>
+<script src="libs/d3.v3.min.js"></script>
+<script src="crossfilter_logic.js"></script>

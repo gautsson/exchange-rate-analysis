@@ -7,6 +7,7 @@
     min-height: 2000px;
   }
 
+
   #body {
     position: relative;
   }
@@ -17,7 +18,7 @@
   }
 
   h1 {
-    font-size: 96px;
+    font-size: 70px;
     margin-top: .3em;
     margin-bottom: 0;
   }
@@ -89,7 +90,7 @@
   }
 
   #hour-chart {
-    width: 260px;
+    width: 420px;
   }
 
   #distance-chart {
