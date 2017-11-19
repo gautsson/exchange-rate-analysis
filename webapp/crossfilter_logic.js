@@ -1,4 +1,4 @@
-d3.csv("../data/landsbanki_sek_isk.csv", function (error, transactions) {
+d3.csv("./data/landsbanki_sek_isk.csv", function (error, transactions) {
     // Various formatters.
     var formatNumber = d3.format(",d"),
         formatDate = d3.time.format("%d %B %Y"),
@@ -274,7 +274,7 @@ d3.csv("../data/landsbanki_sek_isk.csv", function (error, transactions) {
 
         d3.select("#active").text(formatNumber(all.value()));
 
-        console.log(exchange_rate_sum.value())
+        // console.log(exchange_rate_sum.value())
         var averageRate = exchange_rate_sum.value() / all.value();
         if (averageRate === Infinity || averageRate === -Infinity) {
             d3.select("#average").text("No values selected");
